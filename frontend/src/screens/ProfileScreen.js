@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 
 import {getUserProfileAction, updateUserProfileAction}  from '../Actions/userActions'
 import {listMyOrders}  from '../Actions/OrderActions'
+import {USER_UPDATE_PROFILE_RESET} from '../Constants/UserConstants'
 
 const ProfileScreen = ({history}) => {
 
@@ -28,7 +29,8 @@ const ProfileScreen = ({history}) => {
 
     // Get the Updated Profile 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const {success, userInfo:userProfileInfo} = userUpdateProfile
+    const {
+        success, userInfo:userProfileInfo} = userUpdateProfile
 
     // Get the orders for the user
     const listMyOrder = useSelector(state => state.listMyOrder)
@@ -38,7 +40,11 @@ const ProfileScreen = ({history}) => {
         if(!userInfo){
             history.push('/')
         }else{
-            if(!user.name || user._id !== userInfo._id){
+            if(!user.name || user._id !== userInfo._id || success){
+                console.log(user.name)
+                console.log(user._id !== userInfo._id)
+                console.log(success)
+                dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserProfileAction('profile'))
                 dispatch(listMyOrders())
             }else{
@@ -54,13 +60,13 @@ const ProfileScreen = ({history}) => {
                 setEmail(user.email)
             }
         }
-    },[history, userInfo, dispatch, user])
+    },[history, userInfo, dispatch, user, success])
 
     const submitHandler = (e) => {
         e.preventDefault()
 
         // Remove the Previous msg
-        setMessage(null)
+        setMessage('')
 
         // Dispatch Register Action
         if(password !== confirmPassword){
@@ -122,7 +128,7 @@ const ProfileScreen = ({history}) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders && orders.map(order => (
+                            {orders.map(order => (
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
                                     <td>{order.createdAt.substring(0,10)}</td>
@@ -130,7 +136,7 @@ const ProfileScreen = ({history}) => {
                                     <td>{order.isPaid ? order.paidAt.substring(0,10) : (
                                         <i className='fas fa-times' style={{color:'red'}}></i>
                                     )}</td>
-                                    <td>{order.isDelivered ? order.delieverdAt.substring(0,10) : (
+                                    <td>{order.isDelivered ? order.deliveredAt.substring(0,10) : (
                                         <i className='fas fa-times' style={{color:'red'}}></i>
                                     )}</td>
                                     <td>

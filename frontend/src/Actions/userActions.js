@@ -83,6 +83,7 @@ export const userRegisterAction = (name, email, password) => async(dispatch) => 
 }
 
 export const getUserProfileAction = (id) => async(dispatch, getState) => {
+    console.log('getUserProfileAction')
     try {
         dispatch({
             type:USER_DETAILS_REQUEST

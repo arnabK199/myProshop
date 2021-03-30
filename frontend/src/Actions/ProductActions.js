@@ -189,13 +189,13 @@ export const getTopProducts = () => async(dispatch, getState) => {
 
         const { userLogin: { userInfo }} = getState()
 
-        const config = {
-            headers:{
-                'Authorization': `Bearer ${userInfo.token}`
-            }
-        }
+        // const config = {
+        //     headers:{
+        //         'Authorization': `Bearer ${userInfo.token}`
+        //     }
+        // }
 
-        const {data} = await axios.get(`/api/products/top`, config)
+        const {data} = await axios.get(`/api/products/top`)
         
         dispatch({
             type:PRODUCT_TOP_SUCCESS,

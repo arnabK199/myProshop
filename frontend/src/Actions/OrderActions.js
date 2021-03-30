@@ -130,6 +130,7 @@ export const deliverOrder = (orderId) => async(dispatch, getState) => {
 }
 
 export const listMyOrders = () => async(dispatch, getState) => {
+    console.log('listMyOrders')
     try {
         dispatch({
             type:ORDER_LIST_MY_REQUEST
